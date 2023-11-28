@@ -1,0 +1,55 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Load the dataset from a CSV file
+data = pd.read_csv("C:/Users/91988/OneDrive/Desktop/7th Sem/mlLab/Food-Truck-LineReg.csv")
+
+# Extract the features 'x' and 'y'
+x = data['x']
+y = data['y']
+
+# Generate a scatter plot
+plt.scatter(x, y)
+m, b = np.polyfit(x, y, 1)
+plt.plot(x, m*x + b)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Scatter Plot of x vs y')
+plt.show()
+
+    
+# Compute the correlation matrix
+correlation_matrix = np.corrcoef(x, y)
+print('Correlation Matrix:')
+print(correlation_matrix)
+
+# Reshape the features for linear regression
+x = x.values.reshape(-1, 1)
+
+# Perform linear regression
+regression_model = LinearRegression()
+regression_model.fit(x, y)
+slope = regression_model.coef_[0]
+intercept = regression_model.intercept_
+
+# Predicted values using the regression line
+y_pred = regression_model.predict(x)
+
+# Calculate metrics
+SSE = np.sum((y - y_pred) ** 2) # Sum of Squared Errors
+SSR = np.sum((y_pred - np.mean(y)) ** 2) # Sum of Squares due to Regression
+SST = np.sum((y - np.mean(y)) ** 2) # Total Sum of Squares
+R_squared = 1 - (SSE / SST) # R-squared
+
+# Display regression parameters and metrics
+print('Regression Parameters:')
+print('Slope:', slope)
+print('Intercept:', intercept)
+
+print('\nMetrics:')
+print('SSE:', SSE)
+print('SSR:', SSR)
+print('SST:', SST)
+print('R-squared:', R_squared)

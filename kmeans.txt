@@ -1,0 +1,86 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+# Your data points
+data_points = np.array([
+    [5.9, 3.2],
+    [4.6, 2.9],
+    [6.2, 2.8],
+    [4.7, 3.2],
+    [5.5, 4.2],
+    [5.0, 3.0],
+    [4.9, 3.1],
+    [6.7, 3.1],
+    [5.1, 3.8],
+    [6.0, 3.0]
+])
+
+# Specify the number of clusters
+n_clusters = 3
+
+# Create a K-Means instance
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+
+# Fit the K-Means model to your data
+kmeans.fit(data_points)
+
+# Get cluster assignments for each data point
+labels = kmeans.labels_
+print(labels)
+
+# Get the coordinates of cluster centers
+cluster_centers = kmeans.cluster_centers_
+print(cluster_centers)
+
+# Visualize the data and cluster centers
+plt.scatter(data_points[:, 0], data_points[:, 1], label='Data Points')
+plt.scatter(cluster_centers[:, 0], cluster_centers[:, 1], marker='x', label='Cluster Centers')
+
+
+plt.title('K-Means Clustering')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.legend()
+plt.show()
+
+#first iteration
+clst=np.array([[6.8,3.2], [3.5,2.6], [5.5,1.5]])
+kmeans=KMeans(n_clusters=3, max_iter=1,init=clst)
+kmeans.fit(data_points)
+labels= kmeans.labels_
+cluster_centers=kmeans.cluster_centers_
+print(labels)
+print(cluster_centers)
+plt.scatter(data_points[:,0],data_points[:,1],label='Data points')
+plt.scatter(cluster_centers[:,0],cluster_centers[:,1],marker='x',c='red',label='cluster centers')
+
+
+#second iteration
+clst=np.array([[6.8,3.2], [3.5,2.6], [5.5,1.5]])
+kmeans=KMeans(n_clusters=3, max_iter=2,init=clst)
+kmeans.fit(data_points)
+labels= kmeans.labels_
+cluster_centers=kmeans.cluster_centers_
+print(labels)
+print(cluster_centers)
+plt.scatter(data_points[:,0],data_points[:,1],label='Data points')
+plt.scatter(cluster_centers[:,0],cluster_centers[:,1],marker='x',c='green',label='cluster centers')
+
+
+#third iteration
+clst=np.array([[6.8,3.2], [3.5,2.6], [5.5,1.5]])
+kmeans=KMeans(n_clusters=3, max_iter=2,init=clst)
+kmeans.fit(data_points)
+labels= kmeans.labels_
+
+cluster_centers=kmeans.cluster_centers_
+print(labels)
+print(cluster_centers)
+print(itern)
+plt.scatter(data_points[:,0],data_points[:,1],label='Data points')
+plt.scatter(cluster_centers[:,0],cluster_centers[:,1],marker='x',c='blue',label='cluster centers')
+
+itern=kmeans.n_iter_
+
+print(itern)

@@ -1,0 +1,63 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn import tree
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Load the Zoo dataset
+data = pd.read_csv("C:/Users/91988/OneDrive/Desktop/7th Sem/mlLab/zoo.csv")
+
+# Extract features (X) and labels Yes
+X = data.drop(columns=["animal_name", "class_type"])
+y = data["class_type"]
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Create a Decision Tree Classifier
+clf = tree.DecisionTreeClassifier(random_state=42)
+
+# Train the classifier on the training data
+clf.fit(X_train, y_train)
+
+# Visualize the decision tree
+plt.figure(figsize=(15, 10))
+tree.plot_tree(clf, feature_names=X.columns.tolist(), class_names=[str(i) for i in clf.classes_], filled=True, rounded=True)
+plt.show()
+
+# Predict class labels on the test set
+y_pred = clf.predict(X_test)
+
+# Generate a confusion matrix
+confusion = confusion_matrix(y_test, y_pred)
+
+# Calculate class-wise accuracy, precision, and recall
+class_accuracy = {}
+class_precision = {}
+class_recall = {}
+
+unique_classes = y_test.unique()
+
+for class_label in unique_classes:
+    idx = y_test == class_label
+    true_positives = sum(y_pred[idx] == class_label)
+    false_positives = sum(y_pred[idx] != class_label)
+    false_negatives = sum(y_test[idx] != class_label)
+
+    accuracy = (true_positives + sum(y_pred[~idx] != class_label)) / len(y_test)
+    precision = true_positives / (true_positives + false_positives)
+    recall = true_positives / (true_positives + false_negatives)
+
+    class_accuracy[class_label] = accuracy
+    class_precision[class_label] = precision
+    class_recall[class_label] = recall
+
+# Print the confusion matrix
+print("Confusion Matrix:")
+print(confusion)
+
+print("Accuracy:")
+print(accuracy_score(y_test, y_pred))
+print("Precision:")
+print(precision_score(y_test, y_pred, average='weighted'))
+print("Recall:")
+print(recall_score(y_test, y_pred, average='weighted'))
